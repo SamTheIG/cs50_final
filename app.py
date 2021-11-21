@@ -7,7 +7,11 @@ from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, ValidationError
 from flask_bcrypt import Bcrypt
 
-app = Flask(__name__)
+app = Flask(__name__,
+    static_url_path='',
+    static_folder='static'
+    )
+
 # database config
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
@@ -76,7 +80,7 @@ def login():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('login'))
+    return redirect(url_for('index'))
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
@@ -90,6 +94,11 @@ def register():
         return redirect(url_for('login'))
 
     return render_template("register.html", form=form)
+
+@app.route("/todo")
+@login_required
+def todo():
+    return render_template("todo.html")
 
 if __name__ == '__main__':
     app.run(debug=True)
