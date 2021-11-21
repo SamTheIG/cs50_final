@@ -24,7 +24,11 @@ it's going to be like some sort of a calendar but not a calendar just a TaskMana
     `source venv/bin/activate` OR `venv\Script\activate`(i think this works on windows IDK)  
     `pip install -r requirements.txt`  
     so basically we just created a environment for this project and installed all the dependencies inside that environment
-4. finally start the localserver and have fun using it for whatever the reason is  
+4. now you have to create the table so:  
+    `python`
+    `from app import db`
+    `db.create_all()`  
+6. finally start the localserver and have fun using it for whatever the reason is  
     `python3 app.py`
 ---
 ### Tips
