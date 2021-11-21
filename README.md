@@ -10,7 +10,7 @@ so for using this you need to do a couple of installation things which I explain
 Ok now that you can use this code let me tell you what it is:  
 
 ### TM
-ok this is the part that I started with(**right now there is a todo list ready to use**), I will say shortly it will be a complete TaskManager(also this one is going to be on the mobile application for the notifications of course)  
+ok this is the part that I started with(**right now there is a todo list ready to use**), I will say shortly it will be a complete TaskManager(also this one is going to be on the mobile application for the notifications and etc)  
 it's going to be like some sort of a calendar but not a calendar just a TaskManager!! honestly, it is just a todo list with more abilities((:
 
 ## instalation:
