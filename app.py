@@ -1,6 +1,6 @@
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import UserMixin
+from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_wtf import FlaskForm
 from flask_wtf.form import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
@@ -8,10 +8,21 @@ from wtforms.validators import InputRequired, Length, ValidationError
 from flask_bcrypt import Bcrypt
 
 app = Flask(__name__)
+# database config
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+# secrert key should be secret in production but here i allow it to be shown
 app.config['SECRET_KEY'] = 'this is a secret!no shit/:'
+
+# login config
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = "login"
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -42,10 +53,30 @@ class LoginForm(FlaskForm):
 def index():
     return render_template("index.html")
 
+@app.route("/dashboard", methods=['GET', 'POST'])
+@login_required
+def dashboard():
+    return render_template("dashboard.html")
+
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     form = LoginForm()
+
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user:
+            if bcrypt.check_password_hash(user.password, form.password.data):
+                login_user(user)
+                flash('Logged in successfully.')
+                return redirect(url_for('dashboard'))
+
     return render_template("login.html", form=form)
+
+@app.route("/logout", methods=['GET', 'POST'])
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
