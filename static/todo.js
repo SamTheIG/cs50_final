@@ -102,7 +102,7 @@ Array.from(actions.children).forEach(action => {
 					if (add.add.value) {
 						todos.push(
 							{"content": add.add.value, "status": true,
-								"date": [date.getDate(), date.getMonth(), date.getFullYear()]}
+								"date": [date.getDate(), date.getMonth() + 1, date.getFullYear()]}
 						)
 						localStorage.setItem("todos", JSON.stringify(todos))
 						createTodos(todos)
