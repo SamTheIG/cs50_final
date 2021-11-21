@@ -98,6 +98,7 @@ def register():
 @app.route("/todo")
 @login_required
 def todo():
+    # TODO: make this to work with database insted of localstorage
     return render_template("todo.html")
 
 if __name__ == '__main__':
